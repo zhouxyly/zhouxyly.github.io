@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#2.3.0'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>关于学习线索二叉树的种种问题分析 - Fluoxetine</title>
+  
+    <meta name="keywords" content="data structure">
+  
+  
+    <meta name="description" content="关于学习线索二叉树寻找前驱/后继的种种问题分析
+在复习数据结构的过程中，我发现线索二叉树的寻找前驱后继的问题十分繁琐，特此在这里总结一下学习中的收获与感悟。
+
+中序
+
+中序遍历后继结点
+
+中序遍历前驱结点
+
+
+
+先序
+
+先序遍历后继结点
+先序遍历前驱结点
+
+
+后序
+
+后序遍历后继结点
+后序遍历前驱结点
+
+
+">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="Fluoxetine">
+  
+
+  <!-- import meta -->
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css">
+  
+
+  <!-- import link -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<!-- 样式一（鼠标点击更换样式） -->
+<script src="https://g.joyinshare.com/hc/ribbon.min.js" type="text/javascript"></script>
+<!-- 样式二（飘动的彩带） -->
+<script src="https://g.joyinshare.com/hc/piao.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.8.3/jquery.js"></script>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur floatable">
+
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <a class="logo flat-box"></a>
+      <ul class='switcher h-list'>
+        <li><a class="s-comment flat-btn fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc flat-btn fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="logo flat-box" target="_self" href='/'>
+          
+          
+            <i class='fas fa-rss'></i>
+          
+          
+            Fluoxetine
+          
+          
+        </a>
+      
+
+      
+
+			<div class='menu navigation'>
+				<ul class='h-list'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  
+                    <i class='fas fa-rss fa-fw'></i>
+                  
+                  博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  
+                    <i class='fas fa-folder-open fa-fw'></i>
+                  
+                  分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  
+                    <i class='fas fa-tags fa-fw'></i>
+                  
+                  标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  
+                    <i class='fas fa-archive fa-fw'></i>
+                  
+                  归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  
+                    <i class='fas fa-link fa-fw'></i>
+                  
+                  友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  
+                    <i class='fas fa-info-circle fa-fw'></i>
+                  
+                  关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      
+        <div class="m_search">
+          <form name="searchform" class="form u-search-form">
+            <i class="icon fas fa-search fa-fw"></i>
+            <input type="text" class="input u-search-input" placeholder="搜索" />
+          </form>
+        </div>
+      
+
+			<ul class='switcher h-list'>
+				
+					<li><a class="s-search flat-btn fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li><a class="s-menu flat-btn fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<ul class="menu-phone navigation white-box">
+  
+  
+    <li>
+      <a class="flat-box" href=/
+        
+        
+        
+          id="home"
+        >
+        
+          <i class='fas fa-rss fa-fw'></i>
+        
+        博客
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/categories/
+        
+        
+        
+          id="categories"
+        >
+        
+          <i class='fas fa-folder-open fa-fw'></i>
+        
+        分类
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/tags/
+        
+        
+        
+          id="tags"
+        >
+        
+          <i class='fas fa-tags fa-fw'></i>
+        
+        标签
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/archives/
+        
+        
+        
+          id="archives"
+        >
+        
+          <i class='fas fa-archive fa-fw'></i>
+        
+        归档
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/friends/
+        
+        
+        
+          id="friends"
+        >
+        
+          <i class='fas fa-link fa-fw'></i>
+        
+        友链
+      </a>
+    </li>
+  
+    <li>
+      <a class="flat-box" href=/about/
+        
+        
+        
+          id="about"
+        >
+        
+          <i class='fas fa-info-circle fa-fw'></i>
+        
+        关于
+      </a>
+    </li>
+  
+</ul>
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <!-- 数字雨 -->
+  <canvas id="canvas" width="1440" height="900" ></canvas>
+  <script type="text/javascript" src="/js/DigitalRain.js"></script>
+  
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box shadow floatable article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2021/01/29/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%A7%8D%E7%A7%8D%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/">
+        关于学习线索二叉树的种种问题分析
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+<div class='new-meta-item author'>
+  <a href="" rel="nofollow">
+    <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/avatar/avatar.png">
+    <p>Fluoxetine</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Jan 29, 2021</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <h1 id="关于学习线索二叉树寻找前驱-后继的种种问题分析"><a href="#关于学习线索二叉树寻找前驱-后继的种种问题分析" class="headerlink" title="关于学习线索二叉树寻找前驱/后继的种种问题分析"></a>关于学习线索二叉树寻找前驱/后继的种种问题分析</h1><hr>
+<p>在复习数据结构的过程中，我发现线索二叉树的寻找前驱后继的问题十分繁琐，特此在这里总结一下学习中的收获与感悟。</p>
+<ol>
+<li><p>中序</p>
+<ul>
+<li><p>中序遍历后继结点</p>
+</li>
+<li><p>中序遍历前驱结点</p>
+</li>
+</ul>
+</li>
+<li><p>先序</p>
+<ul>
+<li>先序遍历后继结点</li>
+<li>先序遍历前驱结点</li>
+</ul>
+</li>
+<li><p>后序</p>
+<ul>
+<li>后序遍历后继结点</li>
+<li>后序遍历前驱结点</li>
+</ul>
+</li>
+</ol>
+<a id="more"></a>
+
+<blockquote>
+<p>由于线索二叉树有设置ltag和rtag的属性，所以本文只讨论ltag和rtag等于零的情况</p>
+</blockquote>
+<h2 id="一、中序遍历"><a href="#一、中序遍历" class="headerlink" title="一、中序遍历"></a>一、中序遍历</h2><h4 id="1、中序遍历后继结点"><a href="#1、中序遍历后继结点" class="headerlink" title="1、中序遍历后继结点"></a>1、中序遍历后继结点</h4><p>在中序遍历中寻找某个结点*p 的后继结点next</p>
+<p>因为此时结点p一定有右孩子结点，所以接着往下找。由于中序遍历是左中右的顺序，所以要想找这个p结点的后继，一定是p结点右孩子的左孩子结点，所以以此类推，一直寻找到结点p右孩子子树中最左下角的结点，就是结点p的后继结点。</p>
+<blockquote>
+<p>实现代码如下    </p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//找到以p为根的子树中，第一个被中序遍历的结点</span></span><br><span class="line"><span class="function">ThreadNode *<span class="title">Firstnode</span><span class="params">(ThreadNode *p)</span></span>&#123;</span><br><span class="line">    <span class="comment">//循环找到最左下方结点（不一定是叶子结点）</span></span><br><span class="line">    <span class="keyword">while</span>(p-&gt;ltag==<span class="number">0</span>) p=p-&gt;lchild;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在中序线索二叉树中找到结点p的后继结点</span></span><br><span class="line"><span class="function">ThreadNode *<span class="title">Nextnode</span><span class="params">(ThreadNode *p)</span></span>&#123;</span><br><span class="line">    <span class="comment">//右子树中最左下结点</span></span><br><span class="line">    <span class="keyword">if</span>(p-&gt;rtag==<span class="number">0</span>) <span class="keyword">return</span> Firstnode(p-&gt;rchild);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> p-&gt;rchild; <span class="comment">//rtag==1 直接返回后继线索</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//对中序线索二叉树进行中序遍历（利用线索实现的非递归算法）</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Inorder</span><span class="params">(ThreadNode *T)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(ThreadNode *p=FirstNode(T); p!=<span class="literal">NULL</span>; p=Nextnode(p))</span><br><span class="line">        visit(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2、中序遍历前驱结点"><a href="#2、中序遍历前驱结点" class="headerlink" title="2、中序遍历前驱结点"></a>2、中序遍历前驱结点</h4><p>在中序遍历中寻找某个结点*p的前驱结点pre</p>
+<p>因为此时结点p一定有左孩子结点，所以接着往下找。由于中序遍历是左中右的顺序，所以要想找这个p结点的后继，一定是p结点左孩子的右孩子结点，所以以此类推，一直寻找到结点p左孩子子树中最右下角的结点，就是结点p的前驱结点。</p>
+<blockquote>
+<p>实现代码如下</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//找到以p为根的子树中，最后一个被中序遍历的结点</span></span><br><span class="line"><span class="function">ThreadNode *<span class="title">Lastnode</span><span class="params">(ThreadNode *p)</span></span>&#123;</span><br><span class="line">    <span class="comment">//循环找到最右下方结点（不一定是叶子结点）</span></span><br><span class="line">    <span class="keyword">while</span>(p-&gt;rtag==<span class="number">0</span>) p=p-&gt;rchild;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在中序线索二叉树中找到结点p的前驱结点</span></span><br><span class="line"><span class="function">ThreadNode *<span class="title">Prenode</span><span class="params">(ThreadNode *p)</span></span>&#123;</span><br><span class="line">    <span class="comment">//右子树中最右下结点</span></span><br><span class="line">    <span class="keyword">if</span>(p-&gt;ltag==<span class="number">0</span>) <span class="keyword">return</span> Lastnode(p-&gt;lchild);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> p-&gt;lchild; <span class="comment">//rtag==1 直接返回后继线索</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//对中序线索二叉树进行逆向中序遍历</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RevInorder</span><span class="params">(ThreadNode *T)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(ThreadNode *p=LastNode(T); p!=<span class="literal">NULL</span>; p=Prenode(p))</span><br><span class="line">        visit(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、先序遍历"><a href="#二、先序遍历" class="headerlink" title="二、先序遍历"></a>二、先序遍历</h2><h4 id="1、先序遍历后继结点"><a href="#1、先序遍历后继结点" class="headerlink" title="1、先序遍历后继结点"></a>1、先序遍历后继结点</h4><p>在先序线索二叉树中找到指定结点*p的先序后继next</p>
+<p>因为此时结点p必有右孩子结点，而先序遍历顺序是根、左、右的顺序所以此时分两种情况</p>
+<p>（1） 若p的左孩子存在，则先序遍历的后继结点就是p的左孩子结点</p>
+<blockquote>
+<p>由于先序遍历顺序是根、左、右，p结点是第一个被访问的，接下来是p的左孩子以及左孩子为根节点的子树，首先应该访问p的左孩子，所以p的后继就是p的左孩子结点。</p>
+</blockquote>
+<p>（2）若p的左孩子不存在，则先序遍历的后继结点是p的右孩子结点</p>
+<blockquote>
+<p>与上述情况相同</p>
+</blockquote>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//类似上面</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2、先序遍历前驱结点"><a href="#2、先序遍历前驱结点" class="headerlink" title="2、先序遍历前驱结点"></a>2、先序遍历前驱结点</h4><p>在先序线索二叉树中找到指定结点*p的先序前驱pre</p>
+<p>因为此时结点p必有左孩子结点，而先序遍历顺序是根、左、右的顺序所以此时无法找到p结点的父节点。</p>
+<p>但若该线索二叉树是用三叉链表组成的，就可以找到结点p的父节点。分为如下四种情况：</p>
+<p>（1）若可以找到p的父节点，且p是左孩子，则先序前驱为p的父节点</p>
+<p>（2）若可以找到p的父节点，且p是右孩子，其左兄弟为空，则先序前驱为p的父节点</p>
+<p>（3）若可以找到p的父节点，且p是右孩子，其左兄弟不为空，则先序前驱是p的父节点的左孩子子树中最后一个被先序遍历的结点</p>
+<p>（4）若p是根节点，则没有先序前驱</p>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//类似上面</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="三、后序遍历"><a href="#三、后序遍历" class="headerlink" title="三、后序遍历"></a>三、后序遍历</h2><h4 id="1、后序遍历后继结点"><a href="#1、后序遍历后继结点" class="headerlink" title="1、后序遍历后继结点"></a>1、后序遍历后继结点</h4><p>在先序线索二叉树中找到指定结点*p的先序后继next</p>
+<p>因为此时结点p必有右孩子结点，后序遍历的顺序是左、右、根，所以此时无法找到p结点的父节点。</p>
+<p>但若该线索二叉树是用三叉链表组成的，就可以找到结点p的父节点。分为如下四种情况：</p>
+<p>（1）若可以找到p的父节点，且p是右孩子，则后序后继为p的父节点</p>
+<p>（2）若可以找到p的父节点，且p是左孩子，其右兄弟为空，则p的后序后继为p的父节点</p>
+<p>（3）若可以找到p的父节点，且p是左孩子，其右兄弟不为空，则p的后序后继是p的父节点的右孩子子树中第一个被后序遍历的结点</p>
+<p>（4）若p是根节点，则没有后序后继</p>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//类似上面</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、后序遍历前驱结点"><a href="#2、后序遍历前驱结点" class="headerlink" title="2、后序遍历前驱结点"></a>2、后序遍历前驱结点</h4><p>在先序线索二叉树中找到指定结点*p的先序后继pre</p>
+<p>因为此时结点p必有左孩子结点，而后序遍历顺序是左、右、根的顺序所以此时分两种情况：</p>
+<p>（1）若p有右孩子，则后续前驱为右孩子</p>
+<p>（2）若p没有右孩子，则后续前驱为左孩子</p>
+<p>代码实现如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//类似上面</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="知识框架图如下："><a href="#知识框架图如下：" class="headerlink" title="知识框架图如下："></a>知识框架图如下：</h5><p><img src="/2021/01/29/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%A7%8D%E7%A7%8D%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/1.png" alt="11"></p>
+
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+          
+            <p>本文永久链接是：<a href=https://zhouxyly.github.io/2021/01/29/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%A7%8D%E7%A7%8D%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/>https://zhouxyly.github.io/2021/01/29/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%A7%8D%E7%A7%8D%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='/img/wechat.png'
+        
+          height='64px'
+        ></div>
+      
+    
+      
+        <div class='fancybox'><img src='/img/airpay.jpg'
+        
+          height='64px'
+        ></div>
+      
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-01-29T22:17:37+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：Jan 29, 2021</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/data-structure/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>data structure</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://zhouxyly.github.io/2021/01/29/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%A7%8D%E7%A7%8D%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/&title=关于学习线索二叉树的种种问题分析 - Fluoxetine&summary=关于学习线索二叉树寻找前驱/后继的种种问题分析
+在复习数据结构的过程中，我发现线索二叉树的寻找前驱后继的问题十分繁琐，特此在这里总结一下学习中的收获与感悟。
+
+中序
+
+中序遍历后继结点
+
+中序遍历前驱结点
+
+
+
+先序
+
+先序遍历后继结点
+先序遍历前驱结点
+
+
+后序
+
+后序遍历后继结点
+后序遍历前驱结点
+
+
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://zhouxyly.github.io/2021/01/29/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%A7%8D%E7%A7%8D%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/&title=关于学习线索二叉树的种种问题分析 - Fluoxetine&summary=关于学习线索二叉树寻找前驱/后继的种种问题分析
+在复习数据结构的过程中，我发现线索二叉树的寻找前驱后继的问题十分繁琐，特此在这里总结一下学习中的收获与感悟。
+
+中序
+
+中序遍历后继结点
+
+中序遍历前驱结点
+
+
+
+先序
+
+先序遍历后继结点
+先序遍历前驱结点
+
+
+后序
+
+后序遍历后继结点
+后序遍历前驱结点
+
+
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://zhouxyly.github.io/2021/01/29/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%A7%8D%E7%A7%8D%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/&title=关于学习线索二叉树的种种问题分析 - Fluoxetine&summary=关于学习线索二叉树寻找前驱/后继的种种问题分析
+在复习数据结构的过程中，我发现线索二叉树的寻找前驱后继的问题十分繁琐，特此在这里总结一下学习中的收获与感悟。
+
+中序
+
+中序遍历后继结点
+
+中序遍历前驱结点
+
+
+
+先序
+
+先序遍历后继结点
+先序遍历前驱结点
+
+
+后序
+
+后序遍历后继结点
+后序遍历前驱结点
+
+
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+            
+              <a class='next' href='/2020/04/18/%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86/'>
+                <p class='title'>什么是事务处理<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>什么是事务处理，如何使用COMMIT和ROLLBACK进行操作？提到事务，你肯定不陌生，和数据库打交道的时候，我们总是会用到事务。最经典的例子就是转账，你要给朋友小王转 100 块钱，而此时你的...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  
+
+
+  
+
+  
+    
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow floatable desktop mobile">
+    
+  <header>
+    
+      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/English-Story/" style="font-size: 24px; color: #555">English_Story</a> <a href="/tags/JDK%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">JDK学习</a> <a href="/tags/Jsp/" style="font-size: 14px; color: #999">Jsp</a> <a href="/tags/Mysql/" style="font-size: 24px; color: #555">Mysql</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">data structure</a> <a href="/tags/hexo/" style="font-size: 24px; color: #555">hexo</a>
+    </div>
+  </section>
+
+
+  
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '关于学习线索二叉树的种种问题分析',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow floatable desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、中序遍历"><span class="toc-text">一、中序遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、中序遍历后继结点"><span class="toc-text">1、中序遍历后继结点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、中序遍历前驱结点"><span class="toc-text">2、中序遍历前驱结点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、先序遍历"><span class="toc-text">二、先序遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、先序遍历后继结点"><span class="toc-text">1、先序遍历后继结点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、先序遍历前驱结点"><span class="toc-text">2、先序遍历前驱结点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、后序遍历"><span class="toc-text">三、后序遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、后序遍历后继结点"><span class="toc-text">1、后序遍历后继结点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、后序遍历前驱结点"><span class="toc-text">2、后序遍历前驱结点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#知识框架图如下："><span class="toc-text">知识框架图如下：</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud shadow floatable desktop mobile">
+    
+  <header>
+    
+      <a href='/blog/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/English-Story/" style="font-size: 24px; color: #555">English_Story</a> <a href="/tags/JDK%E5%AD%A6%E4%B9%A0/" style="font-size: 14px; color: #999">JDK学习</a> <a href="/tags/Jsp/" style="font-size: 14px; color: #999">Jsp</a> <a href="/tags/Mysql/" style="font-size: 24px; color: #555">Mysql</a> <a href="/tags/data-structure/" style="font-size: 14px; color: #999">data structure</a> <a href="/tags/hexo/" style="font-size: 24px; color: #555">hexo</a>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+  
+    <meting-js
+      theme='#1BCDFC'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='list'
+      fixed='false'
+      list-max-height='340px'
+      server='netease'
+      type='playlist'
+      id='3175833810'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="mailto:2802608268@qq.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/zhouxyly"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://music.163.com/#/user/home?id=1703777761"
+                class="social fas fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>Blog content follows the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License</a></p>
+</div>
+      
+    
+      
+        Use
+        <a href="https://volantis.js.org/" target="_blank" class="codename">Volantis</a>
+        as theme
+        
+          , 
+          total visits
+          <span id="busuanzi_value_site_pv"><i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span>
+          times
+        
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://github.com/zhouxyly" target="_blank" rel="noopener">Copyright © 2017-2020 Mr. X</a></p>
+
+        </div>
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/10/2018 17:38:00");//在此处修改你的建站时间，格式：月/日/年 时:分:秒
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+setInterval("createtime()",250);
+</script>
+
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo, google, algolia, azure, baidu" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/41F215B9-261F-48B4-80B5-4E86E165259E.jpeg"];
+        if ('true' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('.cover') {
+          $('.cover').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js" async></script>
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js" async></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.1/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copyed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-clipboard-check');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPYED';
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-exclamation-triangle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+    
+    
+  <!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/fireworks.js"></script>
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
